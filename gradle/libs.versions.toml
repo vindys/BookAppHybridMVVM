@@ -1,0 +1,93 @@
+[versions]
+agp = "8.5.0"
+kotlin = "1.9.24"
+coreKtx = "1.13.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+material3 = "1.2.0"
+hilt = "2.51.1"
+hilt_nav_compose = "1.2.0"
+ksp = "1.9.24-1.0.20"
+compose = "1.6.7"
+compose-compiler = "1.5.12"
+lifecycle = "2.7.0"
+navigation = "2.7.7"
+paging = "3.3.0"
+retrofit = "2.9.0"
+gson = "2.9.0"
+apollo = "3.8.6"
+room = "2.6.1"
+coroutines = "1.7.3"
+#jetbrainsKotlinJvm = "1.9.10"
+runner = "1.6.1"
+#espressoCoreVersion = "3.0.2"
+#appcompatV7 = "28.0.0"
+mockito = "5.5.0"
+turbine = "0.13.0"
+compose-bom = "2024.05.00"
+espressoCoreVersion = "3.0.2"
+appcompatV7 = "28.0.0" # ACTION: Added Compose BOM for better dependency management.
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom"}
+androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+hiltGradlePlugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
+kspGradlePlugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+
+composeUi = { module = "androidx.compose.ui:ui" }
+composeMaterial = { module = "androidx.compose.material:material" }
+composePreview = { module = "androidx.compose.ui:ui-tooling-preview" }
+composeTooling = { module = "androidx.compose.ui:ui-tooling" } # ACTION: Added for debug builds.
+navigationCompose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+
+lifecycleRuntime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycleViewModelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+
+hiltAndroid = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hiltNavigationCompose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_nav_compose" }
+hiltCompiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+
+pagingRuntime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
+pagingCompose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
+
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofitGson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "gson" }
+
+apolloRuntime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
+
+roomRuntime = { module = "androidx.room:room-runtime", version.ref = "room" }
+roomKtx = { module = "androidx.room:room-ktx", version.ref = "room" }
+roomCompiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
+coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+runner = { group = "com.android.support.test", name = "runner", version.ref = "runner" }
+#espresso-core = { group = "com.android.support.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
+#appcompat-v7 = { group = "com.android.support", name = "appcompat-v7", version.ref = "appcompatV7" }
+coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+
+mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+espresso-core = { group = "com.android.support.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
+appcompat-v7 = { group = "com.android.support", name = "appcompat-v7", version.ref = "appcompatV7" }
+
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+#jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+#kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

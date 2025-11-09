@@ -1,0 +1,27 @@
+package com.example.bookapphybridmvvm
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.navigation.compose.rememberNavController
+import com.example.feature_booklist.presentation.navigation.BookNavGraph
+
+
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                Surface {
+                    val navController = rememberNavController()
+                    BookNavGraph(navController)
+                }
+            }
+        }
+    }
+}
