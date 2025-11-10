@@ -38,7 +38,12 @@ class BookDetailsViewModel @Inject constructor(
         observeBook()
     }
 
-    private fun observeBook() {
+    private fun observeBook() = viewModelScope.launch {
+        _bookId.collect { _bookId->
+
+        }
+    }
+    /*private fun observeBook() {
 
             _bookId
                 .filterNotNull()
@@ -55,12 +60,24 @@ class BookDetailsViewModel @Inject constructor(
                     _state.value = result
                 }
                 .launchIn(viewModelScope)
-        }
-    fun loadBook(id: Int) {
-        Log.d(TAG, "loadBook: $id")
-        _bookId.value = id
+        }*/
+    fun loadBook(bookId: Int) = viewModelScope.launch {
+        Log.d(TAG, "loadBook: $bookId")
+        getBookDetailsUseCase(bookId)
+            .onStart {
+                Log.d(TAG, "loadBook: start id : $bookId")
+                _state.value = UiState.Loading
+            }
+            .catch { exception ->
+                Log.d(TAG, "loadBook: error id : $bookId")
+                _state.value = UiState.Error(message = exception.message ?: "Unknown Error")
+            }
+            .collect { uiState ->
+                Log.d(TAG, "loadBook: success id : $bookId")
+                _state.value = uiState
+            }
     }
-    }
+}
 
 
 

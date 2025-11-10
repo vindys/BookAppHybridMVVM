@@ -30,8 +30,8 @@ fun BookNavGraph(navController: NavHostController) {
             arguments = listOf(navArgument("bookId") { type = NavType.IntType })
         ) { backStackEntry ->
             val bookId = backStackEntry.arguments?.getInt("bookId") ?: 0
-            val viewModel: BookDetailsViewModel = hiltViewModel(backStackEntry)
-            BookDetailsScreen(bookId = bookId, navController = navController, viewModel = viewModel)
+            //val viewModel: BookDetailsViewModel = hiltViewModel(backStackEntry)
+            BookDetailsScreen(bookId = bookId, navController = navController)
         }
     }
 }

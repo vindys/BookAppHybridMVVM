@@ -38,6 +38,25 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14" // matches your Compose compiler
     }
+
+    configurations.all {
+        resolutionStrategy {
+            force ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+            force ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+            force ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+        }
+    }
+
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md",
+                "META-INF/LICENSE.txt",
+                "META-INF/NOTICE.txt"
+            )
+        }
+    }
 }
 
 dependencies {
@@ -85,4 +104,9 @@ dependencies {
     // Hilt
     implementation(libs.hiltAndroid)
     ksp(libs.hiltCompiler)
+
+    implementation(libs.mockk)
+    testImplementation(libs.coroutinesTest)
+    testImplementation(libs.turbine)
+    testImplementation(kotlin("test"))
 }
