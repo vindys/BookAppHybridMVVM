@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.navigation.compose.rememberNavController
 import com.example.feature_booklist.presentation.navigation.BookNavGraph
+import com.example.feature_booklist.presentation.ui.BookApp
 
 
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,8 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 Surface {
-                    val navController = rememberNavController()
-                    BookNavGraph(navController)
+                    BookApp()
                 }
             }
         }

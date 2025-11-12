@@ -89,7 +89,7 @@ dependencies {
     // Coroutines
     implementation(libs.coroutinesCore)
     implementation(libs.coroutinesAndroid)
-
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.material3)
 
     // Retrofit

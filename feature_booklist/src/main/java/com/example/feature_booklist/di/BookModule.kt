@@ -33,13 +33,13 @@ object BookModule {
     fun provideGetBooksUseCase(repository: BookRepository): GetBooksUseCase =
         GetBooksUseCase(repository)
 
-    @Provides
+    /*@Provides
     @Singleton
-    fun provideBookListViewModel(getBooksUseCase: GetBooksUseCase): BookListViewModel = BookListViewModel(getBooksUseCase)
+    fun provideBookListViewModel(getBooksUseCase: GetBooksUseCase): BookListViewModel = BookListViewModel(getBooksUseCase)*/
 
-    @Provides
+    /*@Provides
     @Singleton
     fun provideBookDetailsViewModel(getBookDetailsUseCase: GetBookDetailsUseCase): BookDetailsViewModel =
         BookDetailsViewModel(getBookDetailsUseCase)
-
+*/
 }

@@ -54,6 +54,7 @@ dependencies {
 
     // Coroutines
     implementation(libs.coroutinesCore)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
     // Testing
     testImplementation(libs.junit)
