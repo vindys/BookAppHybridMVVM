@@ -80,6 +80,7 @@ dependencies {
     // Hilt + Compose
     implementation(libs.hiltAndroid)
     implementation(libs.hiltNavigationCompose)
+    debugImplementation(libs.androidx.ui.tooling)
     ksp(libs.hiltCompiler)
 
     // Paging

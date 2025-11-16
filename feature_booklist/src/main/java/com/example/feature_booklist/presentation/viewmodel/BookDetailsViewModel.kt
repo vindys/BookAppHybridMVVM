@@ -26,12 +26,12 @@ import javax.inject.Inject
 @HiltViewModel
 class BookDetailsViewModel @Inject constructor(
     private val getBookDetailsUseCase: GetBookDetailsUseCase
-) : ViewModel() {
+) : ViewModel(), BookDetailsViewModelContract {
 
     private val TAG = "BookDetailsViewModel"
     private val _bookId = MutableStateFlow<Int?>(null)
     private val _state = MutableStateFlow<UiState<Book>>(UiState.Loading)
-    val state: StateFlow<UiState<Book>> = _state.asStateFlow()
+    override val state: StateFlow<UiState<Book>> = _state.asStateFlow()
 
     init {
         Log.d(TAG, "ViewModel initialized: $this")
@@ -43,39 +43,24 @@ class BookDetailsViewModel @Inject constructor(
 
         }
     }
-    /*private fun observeBook() {
 
-            _bookId
-                .filterNotNull()
-                .distinctUntilChanged()
-                .onEach { Log.d(TAG, "bookId emitted: $it") }
-                .flatMapLatest { id ->
-                    Log.d(TAG, "flatMapLatest triggered for ID: $id")
-                    getBookDetailsUseCase(id)
-                        .catch { e ->
-                            _state.value = UiState.Error(e.message ?: "Unknown error")
-                        }
+    override fun loadBook(bookId: Int) {
+        viewModelScope.launch {
+            Log.d(TAG, "loadBook: $bookId")
+            getBookDetailsUseCase(bookId)
+                .onStart {
+                    Log.d(TAG, "loadBook: start id : $bookId")
+                    _state.value = UiState.Loading
                 }
-                .onEach { result ->
-                    _state.value = result
+                .catch { exception ->
+                    Log.d(TAG, "loadBook: error id : $bookId")
+                    _state.value = UiState.Error(message = exception.message ?: "Unknown Error")
                 }
-                .launchIn(viewModelScope)
-        }*/
-    fun loadBook(bookId: Int) = viewModelScope.launch {
-        Log.d(TAG, "loadBook: $bookId")
-        getBookDetailsUseCase(bookId)
-            .onStart {
-                Log.d(TAG, "loadBook: start id : $bookId")
-                _state.value = UiState.Loading
-            }
-            .catch { exception ->
-                Log.d(TAG, "loadBook: error id : $bookId")
-                _state.value = UiState.Error(message = exception.message ?: "Unknown Error")
-            }
-            .collect { uiState ->
-                Log.d(TAG, "loadBook: success id : $bookId")
-                _state.value = uiState
-            }
+                .collect { uiState ->
+                    Log.d(TAG, "loadBook: success id : $bookId")
+                    _state.value = uiState
+                }
+        }
     }
 }
 

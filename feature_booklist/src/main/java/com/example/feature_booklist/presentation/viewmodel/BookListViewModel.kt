@@ -25,15 +25,15 @@ import javax.inject.Inject
 @HiltViewModel
 class BookListViewModel @Inject constructor(
     private val getBooksUseCase: GetBooksUseCase
-) : ViewModel(){
+) : ViewModel(), BookListViewModelContract {
     private val _state = MutableStateFlow<UiState<List<Book>>>(UiState.Loading)
-    val state: StateFlow<UiState<List<Book>>> = _state
+    override val state: StateFlow<UiState<List<Book>>> = _state
 
     init {
         loadBooks()
     }
 
-    fun loadBooks() {
+    override fun loadBooks() {
         viewModelScope.launch {
             getBooksUseCase().collect { _state.value = it }
                 }
