@@ -12,11 +12,9 @@ import com.example.feature_booklist.data.GutendexBookResponse
 import com.example.feature_booklist.data.toBook
 import com.example.feature_booklist.data.toDomain
 import com.example.feature_booklist.domain.repository.BookRepositoryImpl
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
@@ -56,9 +54,15 @@ class BookRepositoryImplTest {
 
         // When
         repository.getBooks().test {
+            // Skip Loading
+            val loading = awaitItem()
+            assertTrue(loading is UiState.Loading)
+
+            // Now Success
             val emission = awaitItem()
             assertTrue(emission is UiState.Success)
             assertEquals(sampleBook.title, (emission as UiState.Success).data.first().title)
+
             cancelAndIgnoreRemainingEvents()
         }
 
@@ -145,25 +149,51 @@ class BookRepositoryImplTest {
     }
 
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `getBookById fetches remote if not cached`() = runTest {
-        // Given: No local cache
-        every { mockDao.getBookById(1) } returns flowOf(null)
-        val remoteBook = sampleBook.copy(title = "Animal Farm")
-        coEvery { mockApi.getBookById(1).toBook() } returns remoteBook
-        coEvery { mockDao.insertAll(any()) } just Runs
+    // DAO simulated database
+    val dbFlow = MutableStateFlow<BookEntity?>(null)
 
-        // When
+    every { mockDao.getBookById(1) } returns dbFlow
+
+    // 1️⃣ Create a fake API DTO that your API would return
+    val apiDto = GutendexBook(
+        id = 1,
+        title = "Animal Farm",
+        authors = listOf(Author("George Orwell")),
+        subjects = listOf("Political satire")
+    )
+
+    // 2️⃣ Domain model expected after conversion
+    //val remoteBook = apiDto.toBook()   // your real mapper
+
+    // 3️⃣ Mock API
+    coEvery { mockApi.getBookById(1) } returns apiDto
+
+    // 4️⃣ When repository saves to DB, update the flow
+    coEvery { mockDao.insertAll(any()) } answers {
+        dbFlow.value = BookEntity(
+            id = 1,
+            title = "Animal Farm",
+            author = "George Orwell",
+            description = "Political satire"   // non-null
+        )
+    }
+
+    // When
         repository.getBookById(1).test {
-            val emission = awaitItem()
-            assertTrue(emission is UiState.Success)
-            assertEquals("Animal Farm", (emission as UiState.Success).data.title)
+        assertTrue(awaitItem() is UiState.Loading)
+
+            val success = awaitItem() as UiState.Success<Book>
+        assertEquals("Animal Farm", success.data.title)
+
             cancelAndIgnoreRemainingEvents()
         }
 
-        // Verify both API and DB were used
-        coVerify { mockApi.getBookById(1) }
-        coVerify { mockDao.insertAll(any()) }
+    // Verify DB + API calls
+    coVerify { mockApi.getBookById(1) }
+    coVerify { mockDao.insertAll(any()) }
     }
 
 }

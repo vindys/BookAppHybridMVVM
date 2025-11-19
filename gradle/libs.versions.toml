@@ -28,6 +28,7 @@ runner = "1.6.1"
 #espressoCoreVersion = "3.0.2"
 #appcompatV7 = "28.0.0"
 mockito = "5.5.0"
+timber = "5.0.1"
 turbine = "0.12.0"
 compose-bom = "2024.05.00"
 espressoCoreVersion = "3.0.2"
@@ -81,6 +82,7 @@ runner = { group = "com.android.support.test", name = "runner", version.ref = "r
 coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 espresso-core = { group = "com.android.support.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }

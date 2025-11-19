@@ -2,29 +2,31 @@ package com.example.core.util
 
 import kotlinx.coroutines.flow.*
 
-inline fun <ResultType, RequestType> networkBoundResource(
-    crossinline query: () -> Flow<ResultType>,
+inline fun <ResultType: Any, RequestType> networkBoundResource(
+    crossinline query: () -> Flow<ResultType?>,
     crossinline fetch: suspend () -> RequestType,
     crossinline saveFetchResult: suspend (RequestType) -> Unit,
-    crossinline shouldFetch: (ResultType) -> Boolean = { true }
+    crossinline shouldFetch: (ResultType?) -> Boolean = { true }
 ): Flow<UiState<ResultType>> = flow {
     emit(UiState.Loading)
 
-    val data = query().firstOrNull()
-
-    val flow = if (data == null || shouldFetch(data)) {
+    query()
+        .collect { cached ->
+            val fetchNeeded = cached == null || shouldFetch(cached)
+            if (fetchNeeded) {
         try {
             val remote = fetch()
             saveFetchResult(remote)
-            query().map { UiState.Success(it) }
-        } catch (throwable: Throwable) {
-            query().map {
-                UiState.Error(throwable.message ?: "Network error")
-            }
+                    // After saving, emit latest from DB
+            query()
+                .filterNotNull()
+                        .collect { emit(UiState.Success(it)) }
+                } catch (e: Throwable) {
+                    emit(UiState.Error(e.message ?: "Network error"))
         }
     } else {
-        query().map { UiState.Success(it) }
+                if (cached != null) emit(UiState.Success(cached))
+            }
     }
-
-    emitAll(flow)
 }
+
